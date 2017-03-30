@@ -209,7 +209,7 @@ export default class App extends Component {
               activeOpacity={0.5}
               underlayColor="transparent"
               >
-              <Ionicons name="ios-close" size={42} color="rgba(0,0,0, .5)" />
+              <Ionicons name="ios-close" size={42} color="rgba(255,255,255, .75)" />
             </TouchableHighlight>
            </View>
           </Modal>
@@ -245,7 +245,8 @@ const styles = StyleSheet.create({
     marginLeft: 20
   },
   imageGalleryContainer: {
-    flex: 1
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0, .88)'
   },
   imageGalleryVerticalContainer: {
     flexDirection: 'row',
