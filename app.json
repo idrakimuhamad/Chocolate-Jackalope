@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "Chocolate Jackapole",
+    "sdkVersion": "15.0.0",
+    "icon":"https://s3.amazonaws.com/exp-brand-assets/ExponentEmptyManifest_192.png",
+    "loading":{
+      "icon":"https://s3.amazonaws.com/exp-brand-assets/ExponentEmptyManifest_192.png"
+    },
+  }
+}
