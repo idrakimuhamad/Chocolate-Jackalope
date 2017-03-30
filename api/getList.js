@@ -1,5 +1,3 @@
-import Expo from 'expo';
-
 const ENDPOINT = 'http://devgorgias.azurewebsites.net/api/mobile/latest/moments/1000';
 
 export default (async function getList({ size, page }) {
