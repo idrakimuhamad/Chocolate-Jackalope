@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Expo, { AppLoading } from 'expo';
 import {
+  Platform,
   ActivityIndicator,
   StatusBar,
   View,
@@ -13,7 +14,6 @@ import {
   Modal,
   Dimensions
 } from 'react-native';
-// import InfiniteScrollView from 'react-native-infinite-scroll-view';
 import { Ionicons } from '@expo/vector-icons';
 import getList from './api/getList';
 
@@ -23,6 +23,9 @@ const window = {
 };
 
 export default class App extends Component {
+
+  // the app default state
+  // redux wasn't implemented due to the time constraint
   state = {
     appIsReady: false,
     pageNumber: 1,
@@ -37,25 +40,34 @@ export default class App extends Component {
   };
 
   componentWillMount() {
-    this._getList();
+    // load the initial list
+    this._getList(true);
   }
 
-  _getList() {
+  // the function that call the api to load the list by its pagination
+  _getList(initialAppLoad = false) {
     const { pageSize, pageNumber, lists } = this.state;
     getList({ size: pageSize, page: pageNumber })
     .then((response) => {
+
+      // if no error
       if (!response.Errors.length) {
+
+        // if the result array actually contained something,
+        // we merge it with existing list and create the data source with it
         if (response.Result.length) {
           const tempList = [ ...lists, ...response.Result];
           const dataSource = this.state.dataSource.cloneWithRows(tempList);
-
-          this.setState({
+          const stateObj = {
             dataSource,
-            appIsReady: true,
             pageNumber: pageNumber + 1,
             lists: tempList,
             loadMore: false
-          });
+          };
+
+          if (initialAppLoad) stateObj.appIsReady = true;
+
+          this.setState(stateObj);
 
           console.log('getting list done');
         } else {
@@ -108,7 +120,7 @@ export default class App extends Component {
     );
   }
 
-  _renderSeparator(sectionID: number, rowID: number, adjacentRowHighlighted: bool) {
+  _renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
     return (
       <View
         key={`${sectionID}-${rowID}`}
@@ -216,7 +228,9 @@ export default class App extends Component {
         </View>
       )
     } else {
-      return <AppLoading />;
+      return (
+        <AppLoading />
+      )
     }
   }
 }
@@ -227,7 +241,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   contentContainer: {
-    paddingTop: 20,
+    paddingTop: (Platform.OS === 'ios') ? 20 : 0,
   },
   row: {
     flexDirection: 'row',
